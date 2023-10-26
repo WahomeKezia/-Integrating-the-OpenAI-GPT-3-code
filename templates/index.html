@@ -1,0 +1,33 @@
+<!-- HTML template for code input and suggestions -->
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Code Suggestions</title>
+</head>
+<body>
+    <h1>Code Suggestions</h1>
+    <form method="POST" action="/get_suggestions">
+        <textarea name="code" rows="5" cols="50" placeholder="Enter your code here"></textarea>
+        <br>
+        <input type="submit" value="Get Suggestions">
+    </form>
+    <h2>Suggestions:</h2>
+    <div id="suggestions"></div>
+    <script>
+        document.querySelector('form').addEventListener('submit', async (event) => {
+            event.preventDefault();
+            const code = document.querySelector('textarea[name="code"]').value;
+            const response = await fetch('/get_suggestions', {
+                method: 'POST',
+                body: new URLSearchParams({ code }),
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+            });
+            const suggestions = await response.text();
+            document.querySelector('#suggestions').innerText = suggestions;
+        });
+    </script>
+</body>
+</html>
